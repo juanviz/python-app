@@ -1,0 +1,47 @@
+/* style.css (EJEMPLO) */
+
+/* Cambiar el esquema de colores */
+:root {
+  --primary-color: #2F5D62;
+  --secondary-color: #DFE0DF;
+  --accent-color: #F2A154;
+  --text-color: #333;
+}
+
+/* Usar la nueva fuente */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Títulos */
+h1, h2, h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Botones */
+button {
+  background-color: var(--accent-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Responsive: Ajustar para pantallas pequeñas */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
