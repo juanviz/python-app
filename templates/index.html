@@ -4,16 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Divisas</title>
+ 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <!-- Fuentes: Poppins (títulos / navbar) + Inter (texto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+ 
     <style>
         body {
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
         }
+ 
+        /* ===== NAVBAR ===== */
+        .navbar-custom {
+            background: rgba(10, 25, 60, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 0;
+        }
+ 
+        .navbar-custom .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: 0.3px;
+        }
+ 
+        .navbar-custom .navbar-brand span em {
+            font-style: normal;
+            color: #ffc107;
+        }
+ 
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+        }
+ 
+        .navbar-custom .nav-link {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.25s ease;
+        }
+ 
+        .navbar-custom .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+ 
+        .navbar-custom .nav-link.active {
+            color: #1e3c72;
+            background: #ffc107;
+        }
+ 
+        .navbar-custom .btn-nav {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            padding: 0.45rem 1.3rem;
+            background: #ffc107;
+            border: none;
+            color: #1e3c72;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+ 
+        .navbar-custom .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 193, 7, 0.35);
+        }
+ 
+        .navbar-custom .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+ 
+        .navbar-custom .navbar-toggler-icon {
+            filter: invert(1);
+        }
+ 
+        /* ===== CONTENIDO ===== */
+        main {
+            min-height: calc(100vh - 70px);
+        }
+ 
         .converter-card {
             border-radius: 20px;
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 400px;
         }
+ 
+        .converter-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+ 
         .result-box {
             font-size: 1.5rem;
             font-weight: bold;
@@ -21,53 +121,116 @@
         }
     </style>
 </head>
-
-<body class="d-flex justify-content-center align-items-center vh-100">
-
-    <div class="card shadow-lg p-4 converter-card" style="width: 400px;">
-        <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
-
-        <form method="post">
-            <div class="mb-3">
-                <label class="form-label">Cantidad</label>
-                <input type="number" step="0.01" name="amount" 
-                       class="form-control form-control-lg" 
-                       placeholder="Introduce cantidad" required>
+ 
+<body>
+ 
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+ 
+            <!-- Logo + nombre -->
+            <a class="navbar-brand" href="/">
+                <svg class="logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="24" cy="24" r="22" fill="#ffc107"/>
+                    <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="2"/>
+                    <!-- Flecha superior (→) -->
+                    <path d="M12 19h20" stroke="#1e3c72" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M27 13l7 6-7 6" fill="none" stroke="#1e3c72" stroke-width="3.5"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Flecha inferior (←) -->
+                    <path d="M36 31H16" stroke="#1e3c72" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M21 25l-7 6 7 6" fill="none" stroke="#1e3c72" stroke-width="3.5"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Divi<em>Swap</em></span>
+            </a>
+ 
+            <!-- Botón hamburguesa (móvil) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarMenu" aria-controls="navbarMenu"
+                    aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+ 
+            <!-- Enlaces -->
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#convertidor">Conversor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tasas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Acerca de</a>
+                    </li>
+                </ul>
+ 
+                <a href="#convertidor" class="btn btn-nav">Convertir ahora</a>
             </div>
-
-            <div class="row mb-3">
-                <div class="col">
-                    <select name="from_currency" class="form-select">
-                        <option value="EUR">EUR €</option>
-                        <option value="USD">USD $</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
+        </div>
+    </nav>
+ 
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main class="d-flex justify-content-center align-items-center p-3">
+ 
+        <div class="card shadow-lg p-4 converter-card" id="convertidor">
+            <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
+ 
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number" step="0.01" name="amount"
+                           class="form-control form-control-lg"
+                           placeholder="Introduce cantidad" required>
                 </div>
-                <div class="col text-center align-self-center">
-                    →
+ 
+                <div class="row mb-3">
+                    <div class="col">
+                        <select name="from_currency" class="form-select">
+                            <option value="EUR">EUR €</option>
+                            <option value="USD">USD $</option>
+                            <option value="GBP">GBP £</option>
+                        </select>
+                    </div>
+                    <div class="col text-center align-self-center">
+                        →
+                    </div>
+                    <div class="col">
+                        <select name="to_currency" class="form-select">
+                            <option value="USD">USD $</option>
+                            <option value="EUR">EUR €</option>
+                            <option value="GBP">GBP £</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col">
-                    <select name="to_currency" class="form-select">
-                        <option value="USD">USD $</option>
-                        <option value="EUR">EUR €</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
+ 
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Convertir
+                    </button>
                 </div>
-            </div>
-
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    Convertir
-                </button>
-            </div>
-        </form>
-
-        {% if result is not none %}
-            <div class="mt-4 text-center result-box">
-                {{ result }}
-            </div>
-        {% endif %}
-    </div>
-
+            </form>
+ 
+            {% if result is not none %}
+                <div class="mt-4 text-center result-box">
+                    {{ result }}
+                </div>
+            {% endif %}
+ 
+            {% if error %}
+                <div class="alert alert-danger mt-4 text-center mb-0">
+                    {{ error }}
+                </div>
+            {% endif %}
+        </div>
+ 
+    </main>
+ 
+    <!-- Bootstrap JS (necesario para el menú hamburguesa) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
